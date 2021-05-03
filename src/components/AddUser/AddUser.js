@@ -8,7 +8,7 @@ import axios from 'axios';
 class AddUser extends Component {
 
     addUserClicked(e,user){
-        axios.post("http://localhost:5000/users",user).then((res)=>{
+        axios.post("https://users-crud-app.herokuapp.com/users",user).then((res)=>{
           let userList= [...this.props.users];
           userList.push(res.data);
           this.props.updateUsers(userList);

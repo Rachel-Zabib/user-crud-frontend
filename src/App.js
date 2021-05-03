@@ -16,7 +16,7 @@ import NotFound from './components/NotFound/NotFound';
 class App extends Component {
 
   componentDidMount(){
-    axios.get('http://localhost:5000/users').then((response)=>{
+    axios.get('https://users-crud-app.herokuapp.com/users').then((response)=>{
       let users=response.data;
       this.props.updateUsers(users)
     })

@@ -14,7 +14,7 @@ class UpdateUser extends Component {
 
     componentDidMount(){
         let userId=this.props.match.params.id
-        axios.get(`http://localhost:5000/users/${userId}`).then((res)=>{
+        axios.get(`https://users-crud-app.herokuapp.com/users/${userId}`).then((res)=>{
             let user=res.data;
             this.setState({name:user.name,email:user.email,dragons:user.dragons}) 
         }).catch((err)=>{
@@ -26,8 +26,8 @@ class UpdateUser extends Component {
 
     updateUserClicked(e,user){
         let userId=this.props.match.params.id
-        axios.put(`http://localhost:5000/users/${userId}`,user).then(async (res)=>{
-          let response=await axios.get(`http://localhost:5000/users`);
+        axios.put(`https://users-crud-app.herokuapp.com/users/${userId}`,user).then(async (res)=>{
+          let response=await axios.get(`https://users-crud-app.herokuapp.com/users`);
           this.props.updateUsers(response.data);
           alert("User updated successfully");
           this.props.history.push("/")

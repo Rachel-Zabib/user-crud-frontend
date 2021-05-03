@@ -16,8 +16,8 @@ class Home extends Component{
             alert("Do not allow delete users that were fetched from the remote server")
         }
         else{
-            axios.delete(`http://localhost:5000/users/${user._id}`).then( async (response)=>{
-              let currentUsers= await axios.get(`http://localhost:5000/users`);
+            axios.delete(`https://users-crud-app.herokuapp.com/users/${user._id}`).then( async (response)=>{
+              let currentUsers= await axios.get(`https://users-crud-app.herokuapp.com/users`);
               this.props.updateUsers(currentUsers.data);
             }).catch((error)=>{
                 console.log("error ",error);
