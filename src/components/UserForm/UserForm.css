@@ -1,0 +1,13 @@
+.userFormDiv{
+    width: 50%;
+    margin: 30px auto;
+}
+.emailInput{
+    border: 1px solid gray !important;
+}
+
+.nameSpan{
+    font-size: 15px;
+    color:red;
+}
+

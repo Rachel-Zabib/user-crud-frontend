@@ -1,0 +1,15 @@
+.deleteDiv{
+    display: inline-block;
+    color: red;
+}
+
+.deleteDiv:hover{
+   cursor: pointer;
+}
+
+.disabledUser{
+    opacity: 0.2;
+}
+.disabledUser:hover{
+    cursor:unset;
+ }
