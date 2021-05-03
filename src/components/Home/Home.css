@@ -13,3 +13,7 @@
 .disabledUser:hover{
     cursor:unset;
  }
+
+ .redColor{
+    color: red;
+ }

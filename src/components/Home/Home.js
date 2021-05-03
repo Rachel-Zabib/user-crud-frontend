@@ -10,6 +10,7 @@ class Home extends Component{
         super(props);
         this.deleteButton=this.deleteButton.bind(this);
     }
+
    deleteButton(e,user){
         if(user.disabled)
         {
@@ -19,6 +20,7 @@ class Home extends Component{
             axios.delete(`https://users-crud-app.herokuapp.com/users/${user._id}`).then( async (response)=>{
               let currentUsers= await axios.get(`https://users-crud-app.herokuapp.com/users`);
               this.props.updateUsers(currentUsers.data);
+              alert("User deleted successfully")
             }).catch((error)=>{
                 console.log("error ",error);
             })
@@ -31,8 +33,21 @@ class Home extends Component{
                 <br/>
                 <br/>
                 <div class="container bootstrap snippets bootdey">
+                    <div>
+                        <span class="fa-stack text-info">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <span> Edit user </span>
+                        <span class="fa-stack redColor">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <span> Delete user </span>
+                    </div>
+                    <br/>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 col-11">
                             <div class="main-box no-header clearfix">
                                 <div class="main-box-body clearfix">
                                     <div class="table-responsive">
