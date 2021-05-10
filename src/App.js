@@ -1,47 +1,46 @@
-import React , {Component} from 'react'
+import React,{useEffect} from 'react'
 import './App.css';
 import {Switch,Route,BrowserRouter as Router} from 'react-router-dom';
 import { connect } from 'react-redux';
-import {updateUsers} from './actions/usersAction'
-import axios from 'axios'
-
+import {fetchUsers} from './actions/usersAction'
 import Header from './components/Header/Header'
-import Home from './components/Home/Home'
-import AddUser from './components/AddUser/AddUser';
-import UpdateUser from './components/UpdateUser/UpdateUser';
 import NotFound from './components/NotFound/NotFound';
+import AddUserContainer from './components/AddUser/AddUserContainer';
+import HomeContainer from './components/Home/HomeContainer';
+import UpdateUserContainer from './components/UpdateUser/UpdateUserContainer';
 
 
 
-class App extends Component {
+function App(props) {
 
-  componentDidMount(){
-    axios.get('https://users-crud-app.herokuapp.com/users').then((response)=>{
-      let users=response.data;
-      this.props.updateUsers(users)
-    })
-  }
+ useEffect(() => { 
+  props.fetchUsers();
+ }, [])
 
-  render(){
-    return (
-      <div>
-        <Header/>
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Home}/>
-            <Route exact path="/add" component={AddUser}/>
-            <Route exact path="/update/:id" component={UpdateUser}/>
-            <Route component={NotFound}/> 
-          </Switch>
-        </Router> 
-      </div>
-    );
-  }
+  // componentDidMount(){
+  //   this.props.fetchUsers();
+  // }
+ 
+  
+  return (
+    <div>
+      <Header/>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomeContainer}/>
+          <Route exact path="/add" component={AddUserContainer}/>
+          {(props.users.length>0)? <Route exact path="/update/:id" component={UpdateUserContainer}/>:<div></div>} 
+          <Route component={NotFound}/> 
+        </Switch>
+      </Router> 
+    </div>
+  );
+ 
 }
 
 const mapStateToProps = store => ({
   users: store.usersReducer.usersList
 });
 
-export default connect(mapStateToProps,{updateUsers})(App);
+export default connect(mapStateToProps,{fetchUsers})(App);
 

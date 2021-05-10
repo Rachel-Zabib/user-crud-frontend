@@ -1,107 +1,100 @@
-import React,{Component} from 'react';
-import { connect } from 'react-redux';
-import {updateUsers} from '../../actions/usersAction'
-import axios from 'axios'
-import './Home.css';
+import React from 'react';
+import { Link } from 'react-router-dom'
+import styled from 'styled-components';
 
-
-class Home extends Component{
-    constructor(props){
-        super(props);
-        this.deleteButton=this.deleteButton.bind(this);
+let DeleteDiv=styled.div`
+    display: inline-block;
+    color: red;
+    opacity:${props=>props.disableduser? 0.2:1};
+    
+    &:hover{
+        cursor:${props=>props.disableduser? "unset":"pointer"};
     }
+`;
 
-   deleteButton(e,user){
-        if(user.disabled)
-        {
-            alert("Do not allow delete users that were fetched from the remote server")
-        }
-        else{
-            axios.delete(`https://users-crud-app.herokuapp.com/users/${user._id}`).then( async (response)=>{
-              let currentUsers= await axios.get(`https://users-crud-app.herokuapp.com/users`);
-              this.props.updateUsers(currentUsers.data);
-              alert("User deleted successfully")
-            }).catch((error)=>{
-                console.log("error ",error);
-            })
-        }
-    }
+let RedSpan=styled.span`
+    color: red;
+`;
 
-    render(){
-        return (
-            <div>
+let UpdateLink=styled(Link)`
+    opacity:${props=>props.disableduser? 0.2:1};
+        
+    &:hover{
+        cursor:${props=>props.disableduser? "unset":"pointer"};
+}
+`;
+
+
+
+export default function Home(props){
+    return (
+        <div>
+            <br/>
+            <br/>
+            <div class="container bootstrap snippets bootdey">
+                <div>
+                    <span class="fa-stack text-info">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span> Edit user </span>
+                    <RedSpan className={"fa-stack"}>
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                    </RedSpan>
+                    <span> Delete user </span>
+                </div>
                 <br/>
-                <br/>
-                <div class="container bootstrap snippets bootdey">
-                    <div>
-                        <span class="fa-stack text-info">
-                            <i class="fa fa-square fa-stack-2x"></i>
-                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <span> Edit user </span>
-                        <span class="fa-stack redColor">
-                            <i class="fa fa-square fa-stack-2x"></i>
-                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <span> Delete user </span>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="main-box no-header clearfix">
-                                <div class="main-box-body clearfix">
-                                    <div class="table-responsive">
-                                        <table class="table user-list">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center"><span>Name</span></th>
-                                                    <th class="text-center"><span>Email</span></th>
-                                                    <th class="text-center"><span>Dragons</span></th>
-                                                    <th class="text-center">&nbsp;</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.props.users.map((user,i)=>{
-                                                    return (
-                                                        <tr key={i}>
-                                                            <td class="text-center">{user.name}</td>
-                                                            <td class="text-center">{user.email}</td>
-                                                            <td class="text-center">{user.dragons} </td> 
-                                                            <td style={{width: "20%"}}>
-                                                                <a href={(user.disabled===false)&&`/update/${user._id}`} class={`table-link text-info ${(user.disabled===true)&& "disabledUser"}`}>
-                                                                    <span class="fa-stack">
-                                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                                    </span>
-                                                                </a>
-                                                                <div className={`deleteDiv ${(user.disabled===true)&& "disabledUser"}`} onClick={(e)=>{this.deleteButton(e,user)}}>
-                                                                    <span class="fa-stack">
-                                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="main-box no-header clearfix">
+                            <div class="main-box-body clearfix">
+                                <div class="table-responsive">
+                                    <table class="table user-list">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center"><span>Name</span></th>
+                                                <th class="text-center"><span>Email</span></th>
+                                                <th class="text-center"><span>Dragons</span></th>
+                                                <th class="text-center">&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {props.users.map((user,i)=>{
+                                                return (
+                                                    <tr key={i}>
+                                                        <td class="text-center">{user.name}</td>
+                                                        <td class="text-center">{user.email}</td>
+                                                        <td class="text-center">{user.dragons} </td> 
+                                                        <td style={{width: "20%"}}>
+                                                            <UpdateLink to={(user.disabled===false)&&`/update/${user._id}`} className={`table-link text-info`}  disableduser={(user.disabled===true)|| false} >
+                                                                <span class="fa-stack">
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </UpdateLink>
+                                                            <DeleteDiv disableduser={(user.disabled===true)|| false}  onClick={(e)=>{props.deleteButton(e,user)}}>
+                                                                <span class="fa-stack">
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </DeleteDiv>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
+  
 }
 
-
-const mapStateToProps = store => ({
-    users: store.usersReducer.usersList
-  });
-  
-  export default connect(mapStateToProps,{updateUsers})(Home);
   
   

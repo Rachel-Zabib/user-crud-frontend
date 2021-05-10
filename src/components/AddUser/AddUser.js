@@ -1,37 +1,19 @@
-import React, { Component } from 'react'
+import React from 'react'
 import UserForm from '../UserForm/UserForm'
-import './AddUser.css'
-import { connect } from 'react-redux';
-import {updateUsers} from '../../actions/usersAction'
-import axios from 'axios';
+import styled from 'styled-components'
 
-class AddUser extends Component {
-
-    addUserClicked(e,user){
-        axios.post("https://users-crud-app.herokuapp.com/users",user).then((res)=>{
-          let userList= [...this.props.users];
-          userList.push(res.data);
-          this.props.updateUsers(userList);
-          alert("User successfully added");
-          this.props.history.push("/")
-        }).catch((err)=>{
-            console.log("error: ",err);
-        })
+const AddUserH1=styled.h1`
+    text-align: center;
+    margin-top: 50px;
+`;
 
 
-    }
+export default function AddUser(props){
 
-    render() {
-        return (
-            <div className="addUserDiv">
-                <h1>Add User</h1>
-                <UserForm buttonText={"Add"} userDetails={{}} emailDisabled={false}  onClickForm={this.addUserClicked.bind(this)}/>        
-            </div>
-        )
-    }
+    return (
+        <div>
+            <AddUserH1>Add User</AddUserH1>
+            <UserForm buttonText={"Add"} userDetails={{}} emailDisabled={false} onClickForm={props.addUserClicked}/>        
+        </div>
+    )
 }
-const mapStateToProps = store => ({
-    users: store.usersReducer.usersList
-  });
-  
-  export default connect(mapStateToProps,{updateUsers})(AddUser);
